@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.10.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- 引入外部配置参数 -->
+	<context:property-placeholder location="classpath:etl.properties"/>
+
+
+	<!-- 配置扫描组件包 -->
+	<context:component-scan base-package="com.ds.etl">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	
+	
+	
+	<!-- mongodb -->
+	<!-- ========================================================== -->
+	<!-- mongodb datasource -->
+	<mongo:mongo id="creditvettingMongo" replica-set="${mongo.replicaSet}">
+         <mongo:options  
+	        connections-per-host="${mongo.connectionsPerHost}"  
+	        threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"  
+	        connect-timeout="${mongo.connectTimeout}"   
+	        max-wait-time="${mongo.maxWaitTime}"  
+	        auto-connect-retry="${mongo.autoConnectRetry}"   
+	        socket-keep-alive="${mongo.socketKeepAlive}"  
+	        socket-timeout="${mongo.socketTimeout}"  
+	        slave-ok="${mongo.slaveOk}"  
+	        write-number="${mongo.writeNumber}"  
+	        write-timeout="${mongo.writeTimeout}"  
+	        write-fsync="${mongo.writeFsync}"/>
+	</mongo:mongo>
+	
+	<!-- response_info库 -->
+	<mongo:db-factory id="creditvettingMongoDbFactory" dbname="creditvetting" mongo-ref="creditvettingMongo"/>
+    <mongo:template id="creditvettingMongoTemplate" db-factory-ref="creditvettingMongoDbFactory"/>
+    <mongo:repositories 
+    	base-package="com.ds.etl.mongo.vetting,com.ds.etl.mongo.test" 
+    	mongo-template-ref="creditvettingMongoTemplate" 
+    	repository-impl-postfix="Impl"/>
+   	
+   	
+   	
+   	
+   	<!-- mysql -->
+   	<!-- ========================================================== -->
+   	<!--信审系统数据源配置 -->
+	<bean id="creditvettingDatasource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<property name="driverClassName">
+			<value>${creditvetting.mysql.jdbc.driver}</value>
+		</property>
+		<property name="url">
+			<value>${creditvetting.mysql.jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${creditvetting.mysql.jdbc.user}</value>
+		</property>
+		<property name="password">
+			<value>${creditvetting.mysql.jdbc.pwd}</value>
+		</property>
+		<property name="initialSize" value="${creditvetting.mysql.druid.initialSize}" />
+		<property name="minIdle" value="${creditvetting.db.druid.minIdle}" />
+		<property name="maxActive" value="${creditvetting.db.druid.maxActive}" />
+		<property name="maxWait" value="${creditvetting.db.druid.maxWait}" />
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="filters" value="stat" />
+	</bean>
+   	
+   	<!-- 装配jdbcTemplate -->
+	<bean id="creditvettingJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="creditvettingDatasource"/>
+	</bean>
+	<!-- <bean id="creditvettingJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg name="dataSource" ref="creditvettingDatasource"/>
+	</bean> -->
+	
+	
+	
+	<!-- 数据搬运小分队列表 -->
+	<!-- ========================================================== -->
+	<!-- 测试搬运组 -->
+	<bean id="localPersonCarrierGroup" class="com.ds.etl.carrier.test.LocalPersonCarrierGroup">
+		<constructor-arg name="senderRepository" ref="localPersonMysqlDao"/>
+		<constructor-arg name="receiverRepository" ref="localPersonMongoDao"/>
+		<constructor-arg name="carrierGroupBatchSize" value="9"/>
+		<constructor-arg name="carrierBatchSize" value="3"/>
+	</bean>
+	
+	<!-- 运营商搬运组 -->
+	<bean id="telRootLoginCarrierGroup" class="com.ds.etl.carrier.vetting.TelRootLoginCarrierGroup">
+		<constructor-arg name="senderRepository" ref="telRootLoginMysqlDao"/>
+		<constructor-arg name="receiverRepository" ref="telRootLoginMongoDao"/>
+		<constructor-arg name="carrierGroupBatchSize" value="10000"/>
+		<constructor-arg name="carrierBatchSize" value="500"/>
+	</bean>
+	<bean id="telRootCallCarrierGroup" class="com.ds.etl.carrier.vetting.TelRootCallCarrierGroup">
+		<constructor-arg name="senderRepository" ref="telRootCallMysqlDao"/>
+		<constructor-arg name="receiverRepository" ref="telRootCallMongoDao"/>
+		<constructor-arg name="carrierGroupBatchSize" value="10000"/>
+		<constructor-arg name="carrierBatchSize" value="500"/>
+	</bean>
+	<bean id="telRootMsgCarrierGroup" class="com.ds.etl.carrier.vetting.TelRootMsgCarrierGroup">
+		<constructor-arg name="senderRepository" ref="telRootMsgMysqlDao"/>
+		<constructor-arg name="receiverRepository" ref="telRootMsgMongoDao"/>
+		<constructor-arg name="carrierGroupBatchSize" value="10000"/>
+		<constructor-arg name="carrierBatchSize" value="500"/>
+	</bean>
+	<bean id="telRootBasicInfoCarrierGroup" class="com.ds.etl.carrier.vetting.TelRootBasicInfoCarrierGroup">
+		<constructor-arg name="senderRepository" ref="telRootBasicInfoMysqlDao"/>
+		<constructor-arg name="receiverRepository" ref="telRootBasicInfoMongoDao"/>
+		<constructor-arg name="carrierGroupBatchSize" value="10000"/>
+		<constructor-arg name="carrierBatchSize" value="500"/>
+	</bean>
+	<bean id="telRootBillHistoryCarrierGroup" class="com.ds.etl.carrier.vetting.TelRootBillHistoryCarrierGroup">
+		<constructor-arg name="senderRepository" ref="telRootBillHistoryMysqlDao"/>
+		<constructor-arg name="receiverRepository" ref="telRootBillHistoryMongoDao"/>
+		<constructor-arg name="carrierGroupBatchSize" value="10000"/>
+		<constructor-arg name="carrierBatchSize" value="500"/>
+	</bean>
+</beans>

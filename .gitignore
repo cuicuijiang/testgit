@@ -1,0 +1,12 @@
+.idea
+.settings
+.classpath
+.springBeans
+msxf-approve.iml
+
+target
+.project
+*.iml
+*.txt
+.DS_Store
+bin
