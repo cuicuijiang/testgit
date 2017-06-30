@@ -216,7 +216,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<!-- 信审系统（线上） -->
+				<!-- 信审系统（线上，外网） -->
 				<creditvetting.db.driver>com.mysql.jdbc.Driver</creditvetting.db.driver>
 				<creditvetting.db.host>114.55.2.161</creditvetting.db.host>
 				<creditvetting.db.port>8066</creditvetting.db.port>
@@ -227,17 +227,38 @@
 				<creditvetting.db.druid.minIdle>5</creditvetting.db.druid.minIdle>
 				<creditvetting.db.druid.maxActive>30</creditvetting.db.druid.maxActive>
 				<creditvetting.db.druid.maxWait>600000</creditvetting.db.druid.maxWait>
-				<!-- <creditvetting.db.driver>com.mysql.jdbc.Driver</creditvetting.db.driver> 
-					<creditvetting.db.host>dbserver</creditvetting.db.host> <creditvetting.db.port>3306</creditvetting.db.port> 
-					<creditvetting.db.dbname>test</creditvetting.db.dbname> <creditvetting.db.username>root</creditvetting.db.username> 
-					<creditvetting.db.pwd>23wesdxc</creditvetting.db.pwd> <creditvetting.db.druid.initialSize>50</creditvetting.db.druid.initialSize> 
-					<creditvetting.db.druid.minIdle>10</creditvetting.db.druid.minIdle> <creditvetting.db.druid.maxActive>50</creditvetting.db.druid.maxActive> 
-					<creditvetting.db.druid.maxWait>600000</creditvetting.db.druid.maxWait> -->
-
+				
 				<!-- mongodb -->
 				<mongo.replicaSet>192.168.1.121:27017</mongo.replicaSet>
+				<creditvetting.username>creditvetting</creditvetting.username>
+				<creditvetting.password>tn123456</creditvetting.password>
 			</properties>
 		</profile>
-
+		
+		<!--生产环境 -->
+		<profile>
+			<id>product</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<!-- 信审系统（线上，内网） -->
+				<creditvetting.db.driver>com.mysql.jdbc.Driver</creditvetting.db.driver>
+				<creditvetting.db.host>rr-bp1190lr0vk21hhur.mysql.rds.aliyuncs.com</creditvetting.db.host>
+				<creditvetting.db.port>3306</creditvetting.db.port>
+				<creditvetting.db.dbname>credit_vetting</creditvetting.db.dbname>
+				<creditvetting.db.username>vetting_migrate</creditvetting.db.username>
+				<creditvetting.db.pwd>gAt50Nk5</creditvetting.db.pwd>
+				<creditvetting.db.druid.initialSize>30</creditvetting.db.druid.initialSize>
+				<creditvetting.db.druid.minIdle>5</creditvetting.db.druid.minIdle>
+				<creditvetting.db.druid.maxActive>30</creditvetting.db.druid.maxActive>
+				<creditvetting.db.druid.maxWait>600000</creditvetting.db.druid.maxWait>
+				
+				<!-- mongodb -->
+				<mongo.replicaSet>dds-bp18d268e40177a41.mongodb.rds.aliyuncs.com:3717,dds-bp18d268e40177a42.mongodb.rds.aliyuncs.com:3717</mongo.replicaSet>
+				<creditvetting.username>creditvetting</creditvetting.username>
+				<creditvetting.password>Y7N8S463</creditvetting.password>
+			</properties>
+		</profile>
 	</profiles>
 </project>

@@ -48,6 +48,7 @@ public class TelRootBasicInfo implements Serializable {
 	//查询时间
 	private Date inquiry_time;
 	//任务ID
+	@Indexed
 	private String task_id;
 	//借款申请ID，b_loan_application表
 	@Indexed

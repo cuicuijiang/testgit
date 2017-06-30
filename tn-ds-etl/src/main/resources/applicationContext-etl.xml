@@ -44,7 +44,7 @@
 	</mongo:mongo>
 	
 	<!-- response_info库 -->
-	<mongo:db-factory id="creditvettingMongoDbFactory" dbname="creditvetting" mongo-ref="creditvettingMongo"/>
+	<mongo:db-factory id="creditvettingMongoDbFactory" dbname="creditvetting" mongo-ref="creditvettingMongo" username="${creditvetting.username}" password="${creditvetting.password}"/>
     <mongo:template id="creditvettingMongoTemplate" db-factory-ref="creditvettingMongoDbFactory"/>
     <mongo:repositories 
     	base-package="com.ds.etl.mongo.vetting,com.ds.etl.mongo.test" 
@@ -96,42 +96,42 @@
 	<!-- 数据搬运小分队列表 -->
 	<!-- ========================================================== -->
 	<!-- 测试搬运组 -->
-	<bean id="localPersonCarrierGroup" class="com.ds.etl.carrier.test.LocalPersonCarrierGroup">
+	<!-- <bean id="localPersonCarrierGroup" class="com.ds.etl.carrier.test.LocalPersonCarrierGroup">
 		<constructor-arg name="senderRepository" ref="localPersonMysqlDao"/>
 		<constructor-arg name="receiverRepository" ref="localPersonMongoDao"/>
 		<constructor-arg name="carrierGroupBatchSize" value="9"/>
 		<constructor-arg name="carrierBatchSize" value="3"/>
-	</bean>
+	</bean> -->
 	
 	<!-- 运营商搬运组 -->
 	<bean id="telRootLoginCarrierGroup" class="com.ds.etl.carrier.vetting.TelRootLoginCarrierGroup">
 		<constructor-arg name="senderRepository" ref="telRootLoginMysqlDao"/>
 		<constructor-arg name="receiverRepository" ref="telRootLoginMongoDao"/>
 		<constructor-arg name="carrierGroupBatchSize" value="10000"/>
-		<constructor-arg name="carrierBatchSize" value="500"/>
+		<constructor-arg name="carrierBatchSize" value="1000"/>
 	</bean>
 	<bean id="telRootCallCarrierGroup" class="com.ds.etl.carrier.vetting.TelRootCallCarrierGroup">
 		<constructor-arg name="senderRepository" ref="telRootCallMysqlDao"/>
 		<constructor-arg name="receiverRepository" ref="telRootCallMongoDao"/>
 		<constructor-arg name="carrierGroupBatchSize" value="10000"/>
-		<constructor-arg name="carrierBatchSize" value="500"/>
+		<constructor-arg name="carrierBatchSize" value="1000"/>
 	</bean>
 	<bean id="telRootMsgCarrierGroup" class="com.ds.etl.carrier.vetting.TelRootMsgCarrierGroup">
 		<constructor-arg name="senderRepository" ref="telRootMsgMysqlDao"/>
 		<constructor-arg name="receiverRepository" ref="telRootMsgMongoDao"/>
 		<constructor-arg name="carrierGroupBatchSize" value="10000"/>
-		<constructor-arg name="carrierBatchSize" value="500"/>
+		<constructor-arg name="carrierBatchSize" value="1000"/>
 	</bean>
 	<bean id="telRootBasicInfoCarrierGroup" class="com.ds.etl.carrier.vetting.TelRootBasicInfoCarrierGroup">
 		<constructor-arg name="senderRepository" ref="telRootBasicInfoMysqlDao"/>
 		<constructor-arg name="receiverRepository" ref="telRootBasicInfoMongoDao"/>
 		<constructor-arg name="carrierGroupBatchSize" value="10000"/>
-		<constructor-arg name="carrierBatchSize" value="500"/>
+		<constructor-arg name="carrierBatchSize" value="1000"/>
 	</bean>
 	<bean id="telRootBillHistoryCarrierGroup" class="com.ds.etl.carrier.vetting.TelRootBillHistoryCarrierGroup">
 		<constructor-arg name="senderRepository" ref="telRootBillHistoryMysqlDao"/>
 		<constructor-arg name="receiverRepository" ref="telRootBillHistoryMongoDao"/>
 		<constructor-arg name="carrierGroupBatchSize" value="10000"/>
-		<constructor-arg name="carrierBatchSize" value="500"/>
+		<constructor-arg name="carrierBatchSize" value="1000"/>
 	</bean>
 </beans>

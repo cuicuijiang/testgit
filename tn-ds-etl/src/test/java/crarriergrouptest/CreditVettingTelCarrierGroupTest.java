@@ -27,6 +27,12 @@ public class CreditVettingTelCarrierGroupTest {
 	
 	
 	@Test
+	public void init() {
+		
+	}
+	
+	
+	@Test
 	public void testTelRootLoginCarrierGroup() {
 		telRootLoginCarrierGroup.carry();
 	}

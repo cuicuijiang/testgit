@@ -20,7 +20,9 @@ public class TelRootLogin implements Serializable {
 	//主键
 	@Id
 	private Long id;
+	
 	//任务ID
+	@Indexed
 	private String task_id;
 	
 	//身份证号
