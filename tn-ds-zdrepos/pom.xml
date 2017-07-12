@@ -1,0 +1,268 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.keyllo.ds</groupId>
+	<artifactId>tn-ds-zdrepos</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<junit.version>4.12</junit.version>
+		<springframework.version>4.3.7.RELEASE</springframework.version>
+		<aspectj.version>1.8.0</aspectj.version>
+		<mybatis-spring.version>1.3.1</mybatis-spring.version>
+		<mybatis.version>3.4.2</mybatis.version>
+		<mysql.version>5.1.39</mysql.version>
+		<alibaba.druid.version>0.2.9</alibaba.druid.version>
+		<spring-data-mongodb.version>1.10.3.RELEASE</spring-data-mongodb.version>
+		<slf4j.version>1.7.25</slf4j.version>
+		<log4j.version>1.2.17</log4j.version>
+		<alibaba-fastjson.version>1.2.29</alibaba-fastjson.version>
+	</properties>
+
+
+	<dependencies>
+		<!-- test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${springframework.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- spring ioc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+
+		<!-- aspect aop -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+
+		<!-- spring orm & spring tx -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+
+		<!-- spring & mybatis -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>${mybatis-spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${mybatis.version}</version>
+		</dependency>
+		
+		<!-- mysql & datasource pool -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba.druid</groupId>
+			<artifactId>druid-wrapper</artifactId>
+			<version>${alibaba.druid.version}</version>
+		</dependency>
+		
+		<!-- spring data mongodb -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>${spring-data-mongodb.version}</version>
+		</dependency>
+
+		<!-- log -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		
+		<!-- json -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${alibaba-fastjson.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- 编译插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+
+			<!-- 源码插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- 打包插件(包含spring等依赖) -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>com.ds.etl.zmain.Main</mainClass>
+								</transformer>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+									<resource>META-INF/spring.handlers</resource>
+								</transformer>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+									<resource>META-INF/spring.schemas</resource>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+	
+	
+	<!-- 环境管理 -->
+	<profiles>
+		<!-- 开发环境 -->
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!-- 信审系统（线上，外网） -->
+				<creditvetting.db.driver>com.mysql.jdbc.Driver</creditvetting.db.driver>
+				<creditvetting.db.host>114.55.2.161</creditvetting.db.host>
+				<creditvetting.db.port>8066</creditvetting.db.port>
+				<creditvetting.db.dbname>credit_vetting</creditvetting.db.dbname>
+				<creditvetting.db.username>rou_credit_vetting</creditvetting.db.username>
+				<creditvetting.db.pwd>p6gAM2B085j82773</creditvetting.db.pwd>
+				<creditvetting.db.druid.initialSize>30</creditvetting.db.druid.initialSize>
+				<creditvetting.db.druid.minIdle>5</creditvetting.db.druid.minIdle>
+				<creditvetting.db.druid.maxActive>30</creditvetting.db.druid.maxActive>
+				<creditvetting.db.druid.maxWait>600000</creditvetting.db.druid.maxWait>
+				
+				<!-- mongodb -->
+				<mongo.replicaSet>192.168.1.121:27017</mongo.replicaSet>
+				<datarepos.username>datarepos</datarepos.username>
+				<datarepos.password>tn123456</datarepos.password>
+				<creditvetting.username>creditvetting</creditvetting.username>
+				<creditvetting.password>tn123456</creditvetting.password>
+			</properties>
+		</profile>
+		
+		<!--生产环境 -->
+		<profile>
+			<id>product</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<!-- 信审系统（线上，内网） -->
+				<creditvetting.db.driver>com.mysql.jdbc.Driver</creditvetting.db.driver>
+				<creditvetting.db.host>rr-bp1190lr0vk21hhur.mysql.rds.aliyuncs.com</creditvetting.db.host>
+				<creditvetting.db.port>3306</creditvetting.db.port>
+				<creditvetting.db.dbname>credit_vetting</creditvetting.db.dbname>
+				<creditvetting.db.username>vetting_migrate</creditvetting.db.username>
+				<creditvetting.db.pwd>gAt50Nk5</creditvetting.db.pwd>
+				<creditvetting.db.druid.initialSize>30</creditvetting.db.druid.initialSize>
+				<creditvetting.db.druid.minIdle>5</creditvetting.db.druid.minIdle>
+				<creditvetting.db.druid.maxActive>30</creditvetting.db.druid.maxActive>
+				<creditvetting.db.druid.maxWait>600000</creditvetting.db.druid.maxWait>
+				
+				<!-- mongodb -->
+				<mongo.replicaSet>dds-bp18d268e40177a41.mongodb.rds.aliyuncs.com:3717,dds-bp18d268e40177a42.mongodb.rds.aliyuncs.com:3717</mongo.replicaSet>
+				<datarepos.username>datarepos</datarepos.username>
+				<datarepos.password>Y7N8S463</datarepos.password>
+			</properties>
+		</profile>
+	</profiles>
+</project>
