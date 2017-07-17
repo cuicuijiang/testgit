@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<!-- 自定义调度器管理器 -->
+	<bean id="quartzManager" class="com.repos.quartz.QuartzManager">
+		<property name="stdScheduler" ref="stdScheduler"/>
+	</bean>
+	<!-- 定义调度器 -->
+	<bean id="stdScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<!-- 容器id：指定容器的key，如果不设置，在job的jobDataMap中是获取不到spring容器的 -->
+		<property name="applicationContextSchedulerContextKey" value="applicationContext"/>
+	</bean>
+</beans>

@@ -1,7 +1,5 @@
 package com.repos.mysql.jdbc.vetting;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -9,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import com.repos.model.commons.StateCode.DataCodeEnum;
 import com.repos.model.creditvetting.TelBasicInfo;
+import com.repos.utils.DateUtil;
 
 
 /**
@@ -19,23 +18,14 @@ import com.repos.model.creditvetting.TelBasicInfo;
  */
 @Repository
 public class TelBasicInfoMysqlDao extends CreditVettingBaseDao<TelBasicInfo> {
-	private static final SimpleDateFormat SDF_DATE_AND_TIME  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-	private static final SimpleDateFormat SDF_DATE  = new SimpleDateFormat("yyyy-MM-dd");
 	{
 		tableName = "b_t_basic_info";
 		primaryIdName = "id";
 	}
 	
 	public TelBasicInfo findByIdcardOrUsernumberAndInquiryTimeToday(String idCard, String userNumber, Date inquiryTime) {
-		String dateStr = SDF_DATE.format(inquiryTime);
-		Date startTime = null;
-		Date endTime = null;
-		try {
-			startTime = SDF_DATE_AND_TIME.parse(dateStr + " 00:00:00.000");
-			endTime = SDF_DATE_AND_TIME.parse(dateStr + " 23:59:59.999");
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		Date startTime = DateUtil.startOfSomeday(inquiryTime);
+		Date endTime = DateUtil.endOfSomeday(inquiryTime);
 		
 		String sql = "select * from "+ tableName +" where (idcard=? or user_number=?) and inquiry_time>? and inquiry_time<?";
 		LOGGER.info("sql> {}", sql);

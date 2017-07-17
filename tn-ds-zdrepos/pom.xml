@@ -18,6 +18,7 @@
 		<slf4j.version>1.7.25</slf4j.version>
 		<log4j.version>1.2.17</log4j.version>
 		<alibaba-fastjson.version>1.2.29</alibaba-fastjson.version>
+		<quartz.version>2.2.1</quartz.version>
 	</properties>
 
 
@@ -108,6 +109,18 @@
 			<version>${spring-data-mongodb.version}</version>
 		</dependency>
 
+		<!-- quartz -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+			<version>${quartz.version}</version>
+		</dependency>
+
 		<!-- log -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -179,7 +192,7 @@
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.ds.etl.zmain.Main</mainClass>
+									<mainClass>com.repos.zmain.Main</mainClass>
 								</transformer>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">

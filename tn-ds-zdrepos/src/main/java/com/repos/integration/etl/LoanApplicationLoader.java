@@ -1,5 +1,7 @@
 package com.repos.integration.etl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,4 +33,19 @@ public class LoanApplicationLoader implements Loader<LoanApplication> {
 		return loanApplication;
 	}
 	
+	@Override
+	public List<LoanApplication> load(List<LoanApplication> loanApplications) {
+		long start = System.currentTimeMillis();
+		LOGGER.info("> 开始加载数据");
+		
+		loanApplications = loanApplicationMongoDao.save(loanApplications);
+		
+		LOGGER.info("> 数据加载总耗时: {} s", (System.currentTimeMillis()-start)/1000.0);
+		return loanApplications;
+	}
+
+	@Override
+	public Long getLastestId() {
+		return loanApplicationMongoDao.getLastestApplicationId();
+	}
 }

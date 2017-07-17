@@ -91,4 +91,23 @@
 		<property name="dataSource" ref="creditvettingDatasource"/>
 	</bean>
 	
+	
+	
+	<!-- 数据搬运组 -->
+	<!-- ========================================================== -->
+	<bean id="loanApplicationCarrierGroup" class="com.repos.integration.etl.CarrierGroup">
+		<constructor-arg name="extracter" ref="loanApplicationExtracter"/>
+		<constructor-arg name="loader" ref="loanApplicationLoader"/>
+		<constructor-arg name="startId" value="1"/>
+		<constructor-arg name="endId" value="#{null}"/>
+		<!-- <constructor-arg name="endId" value="30"/> -->
+		<constructor-arg name="carrierGroupBatchSize" value="1000"/>
+		<constructor-arg name="carrierBatchSize" value="250"/>
+	</bean>
+	
+	
+	
+	<!-- 定时任务 -->
+	<!-- ========================================================== -->
+	<import resource="applicationContext-quartz.xml"/>
 </beans>

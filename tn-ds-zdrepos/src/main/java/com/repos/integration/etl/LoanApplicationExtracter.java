@@ -1,12 +1,11 @@
 package com.repos.integration.etl;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.alibaba.fastjson.JSON;
 import com.repos.model.creditvetting.AntifraudInquiry;
 import com.repos.model.creditvetting.BlackandwhiteList;
@@ -97,10 +96,6 @@ public class LoanApplicationExtracter implements Extracter<LoanApplication, Long
 	
 	@Autowired
 	private LoanApplicationMysqlDao loanApplicationMysqlDao;
-	
-	@Autowired
-	private RiskpreloanResultTrans riskpreloanResultTrans;
-	
 	
 	/**
 	 * 用户相关
@@ -203,6 +198,9 @@ public class LoanApplicationExtracter implements Extracter<LoanApplication, Long
 	
 	@Autowired
 	private RiskpreloanResultMysqlDao riskpreloanResultMysqlDao;
+	
+	@Autowired
+	private RiskpreloanResultTrans riskpreloanResultTrans;
 	
 	/**
 	 * 借款审核相关
@@ -453,6 +451,24 @@ public class LoanApplicationExtracter implements Extracter<LoanApplication, Long
 		long end = System.currentTimeMillis();
 		LOGGER.info("> 数据提取总耗时：{} s", (end-start)/1000.0);
 		return loanApplication;
+	}
+	
+	
+	
+	@Override
+	public List<LoanApplication> extract(Long start, Long end) {
+		List<LoanApplication> list = new ArrayList<LoanApplication>();
+		
+		for (Long currentId = start; currentId <= end; currentId++) {
+			LoanApplication loanApplication = extract(currentId);
+			list.add(loanApplication);
+		}
+		return list;
+	}
+
+	@Override
+	public Long getLastestId() {
+		return loanApplicationMysqlDao.maxId();
 	}
 
 }
