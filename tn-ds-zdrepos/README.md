@@ -18,6 +18,7 @@
 * 单表部分关键字段没有查询索引，查询速度较慢
 
 针对以上问题，本部门决定建立以mongodb存储为核心的数据仓库，以分担mysql单节点存储服务器的压力。<br>
+<br>
 
 
 
@@ -38,7 +39,7 @@
 
 ### 核心组件
 
-<img src="http://jira.newbenben.com:7991/projects/RISK/repos/tn-etl/raw/doc/zdrepos-project-desc-01.png?at=refs%2Fheads%2Fmaster" style="width:50%"/>
+<img src="http://jira.newbenben.com:7991/projects/RISK/repos/tn-etl/raw/doc/zdrepos-project-desc-01.png?at=refs%2Fheads%2Fmaster" style="width:300px"/>
 
 
 
@@ -290,7 +291,7 @@ public interface Loader<T> {
 clean install -Dmaven.test.skip=true -P dev
 ```
 
-打包之后在target文件夹下面生成目标jar包（e.g. tn-ds-zdrepos-0.0.1-RELEASE.jar，0.0.1-RELEASE为项目版本号），将目标jar包scp到服务器目标目录（e.g. /opt/ds/etl）<br>
+打包之后在target文件夹下面生成目标jar包（e.g. tn-ds-zdrepos-0.0.1-RELEASE.jar，0.0.1-RELEASE为项目版本号），将目标jar包scp到服务器目标目录（e.g. /opt/ds/etl）<br><br>
 
 
 
