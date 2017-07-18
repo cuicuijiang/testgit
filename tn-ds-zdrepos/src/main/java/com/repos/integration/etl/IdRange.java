@@ -1,4 +1,4 @@
-package com.repos.model.commons;
+package com.repos.integration.etl;
 
 import java.util.ArrayList;
 import java.util.List;

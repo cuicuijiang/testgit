@@ -3,6 +3,7 @@ package com.repos.trans.creditvetting;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSON;
+import com.repos.integration.etl.Transformer;
 import com.repos.model.creditvetting.RiskpreloanResult;
 import com.repos.model.creditvetting.riskpreloan.Address_detect;
 import com.repos.model.creditvetting.riskpreloan.Card_mobile_check;
@@ -31,13 +32,14 @@ import com.repos.model.creditvetting.riskpreloan.Risk_item;
  *
  */
 @Component
-public class RiskpreloanResultTrans {
+public class RiskpreloanResultTrans implements Transformer<RiskpreloanResult, RiskpreloanResult> {
 
 	/**
 	 * RiskpreloanResult 表json数据解析
 	 * @param riskpreloanResult
 	 * @return
 	 */
+	@Override
 	public RiskpreloanResult trans(RiskpreloanResult riskpreloanResult) {
 
 		if (riskpreloanResult.getProxyInfo() != null && !riskpreloanResult.getProxyInfo().isEmpty()) {

@@ -3,9 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.keyllo.ds</groupId>
 	<artifactId>tn-ds-zdrepos</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-RELEASE</version>
 
+	<!-- 公共参数 -->
 	<properties>
+		<!-- 版本信息 -->
 		<java.version>1.8</java.version>
 		<junit.version>4.12</junit.version>
 		<springframework.version>4.3.7.RELEASE</springframework.version>
@@ -19,9 +21,14 @@
 		<log4j.version>1.2.17</log4j.version>
 		<alibaba-fastjson.version>1.2.29</alibaba-fastjson.version>
 		<quartz.version>2.2.1</quartz.version>
+		
+		<!-- 发布信息 -->
+		<releases.url>http://192.168.1.121:9090/nexus/content/repositories/releases/</releases.url>
+		<snapshots.url>http://192.168.1.121:9090/nexus/content/repositories/snapshots/</snapshots.url>
 	</properties>
 
 
+	<!-- 依赖包 -->
 	<dependencies>
 		<!-- test -->
 		<dependency>
@@ -146,6 +153,8 @@
 		</dependency>
 	</dependencies>
 
+
+	<!-- 构建设置 -->
 	<build>
 		<plugins>
 			<!-- 编译插件 -->
@@ -278,4 +287,22 @@
 			</properties>
 		</profile>
 	</profiles>
+	
+	
+	<!-- 版本发布管理 -->
+	<!-- 发布信息 -->
+	<distributionManagement>
+		<!-- 发行版本 -->
+		<repository>
+			<id>user-releases</id>
+			<name>User Project Releases</name>
+			<url>${releases.url}</url>
+		</repository>
+		<!-- 快照版本 -->
+		<snapshotRepository>
+			<id>user-snapshots</id>
+			<name>User Project Snapshots</name>
+			<url>${snapshots.url}</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>

@@ -10,7 +10,6 @@
 	</bean>
 	<!-- 定义调度器 -->
 	<bean id="stdScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<!-- 容器id：指定容器的key，如果不设置，在job的jobDataMap中是获取不到spring容器的 -->
 		<property name="applicationContextSchedulerContextKey" value="applicationContext"/>
 	</bean>
 </beans>
