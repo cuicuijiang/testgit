@@ -4,9 +4,8 @@
 
 ### 源码获取：
 
-[Bitbucket Server](http://zhangqingli@jira.newbenben.com:7991/scm/risk/tn-etl.git)
-[Maven Server](http://192.168.1.121:9090/nexus/content/repositories/releases/com/keyllo/ds/tn-ds-zdrepos/0.0.1-RELEASE/tn-ds-zdrepos-0.0.1-RELEASE-sources.jar)
-
+[Bitbucket Server](http://zhangqingli@jira.newbenben.com:7991/scm/risk/tn-etl.git) <br>
+[Maven Server](http://192.168.1.121:9090/nexus/content/repositories/releases/com/keyllo/ds/tn-ds-zdrepos/0.0.1-RELEASE/tn-ds-zdrepos-0.0.1-RELEASE-sources.jar) <br><br>
 
 
 ### 项目背景：
@@ -18,7 +17,7 @@
 * 所有的业务数据都采用mysql单表存取，虽然在一定程度上减少了mysql维护表间关系的消耗，但这种[非]标准化（NF & JPA）的设计同时大大增加了数据的和应用程序的维护成本
 * 单表部分关键字段没有查询索引，查询速度较慢
 
-针对以上问题，本部门决定建立以mongodb存储为核心的数据仓库，以分担mysql单节点存储服务器的压力。
+针对以上问题，本部门决定建立以mongodb存储为核心的数据仓库，以分担mysql单节点存储服务器的压力。<br>
 
 
 
@@ -39,7 +38,7 @@
 
 ### 核心组件
 
-![zdrepos-project-desc-01](http://jira.newbenben.com:7991/projects/RISK/repos/tn-etl/raw/doc/zdrepos-project-desc-01.png?at=refs%2Fheads%2Fmaster)
+<img src="http://jira.newbenben.com:7991/projects/RISK/repos/tn-etl/raw/doc/zdrepos-project-desc-01.png?at=refs%2Fheads%2Fmaster" style="width:50%"/>
 
 
 
@@ -52,6 +51,7 @@
 * 数据搬运者（carrier）
 * 定时任务管理器（quartzManager）
 
+<br>
 
 
 
@@ -172,7 +172,7 @@ pom数据源参数加载：
 	</profile>
 </profiles>
 ```
-
+<br>
 
 
 
@@ -248,7 +248,7 @@ public interface Loader<T> {
 	Long getLastestId();
 }
 ```
-
+<br>
 
 
 **游标、搬运组、搬运者**
@@ -263,6 +263,7 @@ public interface Loader<T> {
 // 搬运者
 //com.repos.integration.etl.CarrierCallable<T>
 ```
+<br>
 
 
 
@@ -276,6 +277,7 @@ public interface Loader<T> {
 	<property name="applicationContextSchedulerContextKey" value="applicationContext"/>
 </bean>
 ```
+<br>
 
 
 
@@ -288,7 +290,7 @@ public interface Loader<T> {
 clean install -Dmaven.test.skip=true -P dev
 ```
 
-打包之后在target文件夹下面生成目标jar包（e.g. tn-ds-zdrepos-0.0.1-RELEASE.jar，0.0.1-RELEASE为项目版本号），将目标jar包scp到服务器目标目录（e.g. /opt/ds/etl）
+打包之后在target文件夹下面生成目标jar包（e.g. tn-ds-zdrepos-0.0.1-RELEASE.jar，0.0.1-RELEASE为项目版本号），将目标jar包scp到服务器目标目录（e.g. /opt/ds/etl）<br>
 
 
 
@@ -313,6 +315,7 @@ nohup java -DcarrierGroupBean=loanApplicationCarrierGroup -jar tn-ds-zdrepos-0.0
 # carrierGroupBatchSize: 数据搬运组进程一次处理的数据量(默认为1000，前1000条数据处理完成后，再处理下1000条数据)
 # carrierBatchSize: 每个数据搬运线程处理的数据量(默认为250，如果carrierGroupBatchSize为默认的1000，则将会有 1000/250=4 个线程同时抽数)
 ```
+<br>
 
 
 
@@ -327,6 +330,7 @@ nohup java -DcarrierGroupBean=loanApplicationCarrierGroup -DjobClass="com.repos.
 # jobClass: 任务类
 # cron: 定时任务cron表达式(e.g. 0 15 10 ? * MON 表示每周一上午 10:15:00 开始执行)
 ```
+<br>
 
 
 
@@ -692,6 +696,8 @@ nohup java -DcarrierGroupBean=loanApplicationCarrierGroup -DjobClass="com.repos.
 
 
 ### 附录
+
+**** 
 
 > 状态码 (com.repos.model.commons.StateCode)
 
