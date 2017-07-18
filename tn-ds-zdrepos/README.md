@@ -39,7 +39,7 @@
 
 ### 核心组件
 
-<img src="http://jira.newbenben.com:7991/projects/RISK/repos/tn-etl/raw/doc/zdrepos-project-desc-01.png?at=refs%2Fheads%2Fmaster" style="width:300px"/>
+<img src="http://jira.newbenben.com:7991/projects/RISK/repos/tn-etl/raw/doc/zdrepos-project-desc-01.png?at=refs%2Fheads%2Fmaster" width="300px"/>
 
 
 
